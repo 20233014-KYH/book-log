@@ -33,4 +33,20 @@ export const mockBooks: Book[] = [
     review: "천천히 읽어야 하는 책. 아직 완독 못함.",
     createdAt: "2026-09-01",
   },
+  {
+    id: "5",
+    title: "1984",
+    author: "조지 오웰",
+    rating: 5,
+    review: "지금 읽어도 소름 돋는 이야기.",
+    createdAt: "2026-09-03",
+  },
+  {
+    id: "6",
+    title: "달러구트 꿈 백화점",
+    author: "이미예",
+    rating: 4,
+    review: "잠들기 전에 읽기 좋은 따뜻한 이야기.",
+    createdAt: "2026-09-04",
+  },
 ];
