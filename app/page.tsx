@@ -1,8 +1,15 @@
 import Link from "next/link";
-import { mockBooks } from "@/lib/mock-books";
+import { supabase } from "@/lib/supabase";
+import { BookRow } from "@/lib/types";
 import { StarRating } from "@/components/StarRating";
 
-export default function Home() {
+export default async function Home() {
+  const { data: books, error } = await supabase
+    .from("books")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .returns<BookRow[]>();
+
   return (
     <div className="min-h-screen bg-white px-4 py-12 dark:bg-black sm:px-6">
       <div className="mx-auto flex max-w-2xl flex-col gap-8">
@@ -22,8 +29,20 @@ export default function Home() {
           + 책 추가
         </Link>
 
+        {error && (
+          <p className="text-sm text-red-600 dark:text-red-400">
+            책 목록을 불러오지 못했어요: {error.message}
+          </p>
+        )}
+
+        {!error && books?.length === 0 && (
+          <p className="text-sm text-zinc-500 dark:text-zinc-400">
+            아직 기록한 책이 없어요. 첫 책을 추가해보세요.
+          </p>
+        )}
+
         <ul className="flex flex-col divide-y divide-zinc-200 dark:divide-zinc-800">
-          {mockBooks.map((book) => (
+          {books?.map((book) => (
             <li key={book.id}>
               <Link
                 href={`/books/${book.id}`}

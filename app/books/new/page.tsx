@@ -2,10 +2,45 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { supabase } from "@/lib/supabase";
 
 export default function NewBookPage() {
   const [rating, setRating] = useState(0);
-  const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setError("");
+    setSuccess(false);
+
+    if (rating === 0) {
+      setError("별점을 선택해주세요.");
+      return;
+    }
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    setSubmitting(true);
+    const { error } = await supabase.from("books").insert({
+      title: formData.get("title"),
+      author: formData.get("author") || null,
+      rating,
+      review: formData.get("review") || null,
+    });
+    setSubmitting(false);
+
+    if (error) {
+      setError(`저장에 실패했어요: ${error.message}`);
+      return;
+    }
+
+    form.reset();
+    setRating(0);
+    setSuccess(true);
+  }
 
   return (
     <div className="min-h-screen bg-white px-4 py-12 dark:bg-black sm:px-6">
@@ -21,13 +56,7 @@ export default function NewBookPage() {
           책 추가
         </h1>
 
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            setSubmitted(true);
-          }}
-          className="flex flex-col gap-6"
-        >
+        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
           <div className="flex flex-col gap-2">
             <label htmlFor="title" className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
               제목
@@ -89,14 +118,19 @@ export default function NewBookPage() {
 
           <button
             type="submit"
-            className="w-fit rounded-full bg-accent px-6 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
+            disabled={submitting}
+            className="w-fit rounded-full bg-accent px-6 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-60"
           >
-            저장
+            {submitting ? "저장 중..." : "저장"}
           </button>
 
-          {submitted && (
+          {error && (
+            <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+          )}
+
+          {success && (
             <p className="text-sm text-zinc-500 dark:text-zinc-400">
-              아직 데이터베이스를 연결하지 않아서 실제로 저장되지는 않아요. (다음 단계에서 연결할 예정)
+              저장됐어요. Supabase 대시보드의 Table Editor에서 확인해보세요.
             </p>
           )}
         </form>
