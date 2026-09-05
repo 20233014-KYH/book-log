@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Book } from "@/lib/types";
 import { supabase } from "@/lib/supabase";
 
@@ -13,6 +13,15 @@ export function BookDetailClient({ book }: { book: Book }) {
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      setCurrentUserId(data.user?.id ?? null);
+    });
+  }, []);
+
+  const isOwner = currentUserId !== null && currentUserId === book.userId;
 
   async function handleSave(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -98,23 +107,25 @@ export function BookDetailClient({ book }: { book: Book }) {
               기록일 {book.createdAt}
             </p>
 
-            <div className="flex gap-3">
-              <button
-                type="button"
-                onClick={() => setEditing(true)}
-                className="rounded-full border border-zinc-300 px-6 py-2 text-sm font-medium text-zinc-500 hover:border-zinc-900 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-400 dark:hover:border-zinc-50 dark:hover:text-zinc-50"
-              >
-                수정
-              </button>
-              <button
-                type="button"
-                onClick={handleDelete}
-                disabled={deleting}
-                className="rounded-full border border-zinc-300 px-6 py-2 text-sm font-medium text-zinc-500 hover:border-zinc-900 hover:text-zinc-900 disabled:opacity-60 dark:border-zinc-700 dark:text-zinc-400 dark:hover:border-zinc-50 dark:hover:text-zinc-50"
-              >
-                {deleting ? "삭제 중..." : "삭제"}
-              </button>
-            </div>
+            {isOwner && (
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => setEditing(true)}
+                  className="rounded-full border border-zinc-300 px-6 py-2 text-sm font-medium text-zinc-500 hover:border-zinc-900 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-400 dark:hover:border-zinc-50 dark:hover:text-zinc-50"
+                >
+                  수정
+                </button>
+                <button
+                  type="button"
+                  onClick={handleDelete}
+                  disabled={deleting}
+                  className="rounded-full border border-zinc-300 px-6 py-2 text-sm font-medium text-zinc-500 hover:border-zinc-900 hover:text-zinc-900 disabled:opacity-60 dark:border-zinc-700 dark:text-zinc-400 dark:hover:border-zinc-50 dark:hover:text-zinc-50"
+                >
+                  {deleting ? "삭제 중..." : "삭제"}
+                </button>
+              </div>
+            )}
 
             {error && (
               <p className="text-sm text-red-600 dark:text-red-400">{error}</p>

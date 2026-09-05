@@ -2,6 +2,7 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { BookRow } from "@/lib/types";
 import { StarRating } from "@/components/StarRating";
+import { AuthBar } from "@/components/AuthBar";
 
 export const dynamic = "force-dynamic";
 
@@ -24,12 +25,7 @@ export default async function Home() {
           </p>
         </header>
 
-        <Link
-          href="/books/new"
-          className="inline-flex w-fit items-center rounded-full bg-accent px-6 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
-        >
-          + 책 추가
-        </Link>
+        <AuthBar />
 
         {error && (
           <p className="text-sm text-red-600 dark:text-red-400">

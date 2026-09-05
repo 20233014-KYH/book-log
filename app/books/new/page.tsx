@@ -1,17 +1,31 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 
 export default function NewBookPage() {
+  const router = useRouter();
+  const [checkingAuth, setCheckingAuth] = useState(true);
   const [rating, setRating] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      if (!data.user) {
+        router.replace("/login");
+        return;
+      }
+      setCheckingAuth(false);
+    });
+  }, [router]);
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    const form = e.currentTarget;
     setError("");
     setSuccess(false);
 
@@ -20,7 +34,14 @@ export default function NewBookPage() {
       return;
     }
 
-    const form = e.currentTarget;
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
+      router.replace("/login");
+      return;
+    }
+
     const formData = new FormData(form);
 
     setSubmitting(true);
@@ -29,6 +50,7 @@ export default function NewBookPage() {
       author: formData.get("author") || null,
       rating,
       review: formData.get("review") || null,
+      user_id: user.id,
     });
     setSubmitting(false);
 
@@ -40,6 +62,10 @@ export default function NewBookPage() {
     form.reset();
     setRating(0);
     setSuccess(true);
+  }
+
+  if (checkingAuth) {
+    return null;
   }
 
   return (

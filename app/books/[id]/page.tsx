@@ -36,6 +36,7 @@ export default async function BookDetailPage({
     rating: row.rating,
     review: row.review ?? undefined,
     createdAt: row.created_at.slice(0, 10),
+    userId: row.user_id,
   };
 
   return <BookDetailClient book={book} />;
