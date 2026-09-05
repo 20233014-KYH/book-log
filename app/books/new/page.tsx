@@ -38,7 +38,7 @@ export default function NewBookPage() {
               type="text"
               required
               placeholder="책 제목"
-              className="rounded-md border border-zinc-300 px-3 py-2 text-zinc-900 outline-none focus:border-zinc-900 dark:border-zinc-700 dark:bg-black dark:text-zinc-50 dark:focus:border-zinc-50"
+              className="rounded-md border border-zinc-300 px-3 py-2 text-zinc-900 outline-none focus:border-accent dark:border-zinc-700 dark:bg-black dark:text-zinc-50 dark:focus:border-accent"
             />
           </div>
 
@@ -51,7 +51,7 @@ export default function NewBookPage() {
               name="author"
               type="text"
               placeholder="지은이"
-              className="rounded-md border border-zinc-300 px-3 py-2 text-zinc-900 outline-none focus:border-zinc-900 dark:border-zinc-700 dark:bg-black dark:text-zinc-50 dark:focus:border-zinc-50"
+              className="rounded-md border border-zinc-300 px-3 py-2 text-zinc-900 outline-none focus:border-accent dark:border-zinc-700 dark:bg-black dark:text-zinc-50 dark:focus:border-accent"
             />
           </div>
 
@@ -65,9 +65,7 @@ export default function NewBookPage() {
                   aria-label={`별점 ${n}점`}
                   onClick={() => setRating(n)}
                   className={
-                    n <= rating
-                      ? "text-zinc-900 dark:text-zinc-50"
-                      : "text-zinc-300 dark:text-zinc-700"
+                    n <= rating ? "text-accent" : "text-zinc-300 dark:text-zinc-700"
                   }
                 >
                   ★
@@ -85,13 +83,13 @@ export default function NewBookPage() {
               name="review"
               rows={3}
               placeholder="이 책에 대한 짧은 생각"
-              className="resize-none rounded-md border border-zinc-300 px-3 py-2 text-zinc-900 outline-none focus:border-zinc-900 dark:border-zinc-700 dark:bg-black dark:text-zinc-50 dark:focus:border-zinc-50"
+              className="resize-none rounded-md border border-zinc-300 px-3 py-2 text-zinc-900 outline-none focus:border-accent dark:border-zinc-700 dark:bg-black dark:text-zinc-50 dark:focus:border-accent"
             />
           </div>
 
           <button
             type="submit"
-            className="w-fit rounded-full bg-zinc-900 px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700 dark:bg-zinc-50 dark:text-black dark:hover:bg-zinc-300"
+            className="w-fit rounded-full bg-accent px-6 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
           >
             저장
           </button>

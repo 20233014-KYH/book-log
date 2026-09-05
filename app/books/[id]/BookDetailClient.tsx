@@ -26,9 +26,9 @@ export function BookDetailClient({ book }: { book: Book }) {
                 {book.title}
               </h1>
               {book.author && (
-                <p className="text-zinc-500 dark:text-zinc-400">{book.author}</p>
+                <p className="text-base text-zinc-500 dark:text-zinc-400">{book.author}</p>
               )}
-              <span className="text-xl text-zinc-900 dark:text-zinc-50">
+              <span className="text-xl text-accent">
                 {"★".repeat(book.rating)}
                 <span className="text-zinc-300 dark:text-zinc-700">
                   {"★".repeat(5 - book.rating)}
@@ -50,14 +50,14 @@ export function BookDetailClient({ book }: { book: Book }) {
               <button
                 type="button"
                 onClick={() => setEditing(true)}
-                className="rounded-full border border-zinc-900 px-5 py-2 text-sm font-medium text-zinc-900 hover:bg-zinc-900 hover:text-white dark:border-zinc-50 dark:text-zinc-50 dark:hover:bg-zinc-50 dark:hover:text-black"
+                className="rounded-full border border-zinc-300 px-6 py-2 text-sm font-medium text-zinc-500 hover:border-zinc-900 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-400 dark:hover:border-zinc-50 dark:hover:text-zinc-50"
               >
                 수정
               </button>
               <button
                 type="button"
                 onClick={() => setMessage("아직 데이터베이스가 연결되지 않아서 삭제되지는 않아요.")}
-                className="rounded-full border border-zinc-300 px-5 py-2 text-sm font-medium text-zinc-500 hover:border-zinc-900 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-400 dark:hover:border-zinc-50 dark:hover:text-zinc-50"
+                className="rounded-full border border-zinc-300 px-6 py-2 text-sm font-medium text-zinc-500 hover:border-zinc-900 hover:text-zinc-900 dark:border-zinc-700 dark:text-zinc-400 dark:hover:border-zinc-50 dark:hover:text-zinc-50"
               >
                 삭제
               </button>
@@ -82,7 +82,7 @@ export function BookDetailClient({ book }: { book: Book }) {
               <input
                 id="title"
                 defaultValue={book.title}
-                className="rounded-md border border-zinc-300 px-3 py-2 text-zinc-900 outline-none focus:border-zinc-900 dark:border-zinc-700 dark:bg-black dark:text-zinc-50 dark:focus:border-zinc-50"
+                className="rounded-md border border-zinc-300 px-3 py-2 text-zinc-900 outline-none focus:border-accent dark:border-zinc-700 dark:bg-black dark:text-zinc-50 dark:focus:border-accent"
               />
             </div>
 
@@ -93,7 +93,7 @@ export function BookDetailClient({ book }: { book: Book }) {
               <input
                 id="author"
                 defaultValue={book.author}
-                className="rounded-md border border-zinc-300 px-3 py-2 text-zinc-900 outline-none focus:border-zinc-900 dark:border-zinc-700 dark:bg-black dark:text-zinc-50 dark:focus:border-zinc-50"
+                className="rounded-md border border-zinc-300 px-3 py-2 text-zinc-900 outline-none focus:border-accent dark:border-zinc-700 dark:bg-black dark:text-zinc-50 dark:focus:border-accent"
               />
             </div>
 
@@ -107,9 +107,7 @@ export function BookDetailClient({ book }: { book: Book }) {
                     aria-label={`별점 ${n}점`}
                     onClick={() => setRating(n)}
                     className={
-                      n <= rating
-                        ? "text-zinc-900 dark:text-zinc-50"
-                        : "text-zinc-300 dark:text-zinc-700"
+                      n <= rating ? "text-accent" : "text-zinc-300 dark:text-zinc-700"
                     }
                   >
                     ★
@@ -126,14 +124,14 @@ export function BookDetailClient({ book }: { book: Book }) {
                 id="review"
                 rows={3}
                 defaultValue={book.review}
-                className="resize-none rounded-md border border-zinc-300 px-3 py-2 text-zinc-900 outline-none focus:border-zinc-900 dark:border-zinc-700 dark:bg-black dark:text-zinc-50 dark:focus:border-zinc-50"
+                className="resize-none rounded-md border border-zinc-300 px-3 py-2 text-zinc-900 outline-none focus:border-accent dark:border-zinc-700 dark:bg-black dark:text-zinc-50 dark:focus:border-accent"
               />
             </div>
 
             <div className="flex gap-3">
               <button
                 type="submit"
-                className="w-fit rounded-full bg-zinc-900 px-6 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-zinc-50 dark:text-black dark:hover:bg-zinc-300"
+                className="w-fit rounded-full bg-accent px-6 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
               >
                 저장
               </button>
