@@ -3,6 +3,8 @@ import { supabase } from "@/lib/supabase";
 import { BookRow } from "@/lib/types";
 import { StarRating } from "@/components/StarRating";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const { data: books, error } = await supabase
     .from("books")
